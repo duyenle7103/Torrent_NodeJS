@@ -1,6 +1,15 @@
 import * as fs from 'fs'
 import bencode from 'bencode'
-import TorrentData from '../utility.js'
+import crypto from 'crypto'
+import { TorrentData } from '../utility.js'
+
+// Calculate info-hash as 20-byte value
+function calculateInfoHash(torrentData) {
+    const info_bencode = bencode.encode(torrentData.info);
+    var info_hash = crypto.createHash('sha1').update(info_bencode).digest();
+    var result = new Uint8Array(info_hash);
+    return result;
+}
 
 // Split pieces into 20-byte length pieces
 function splitPieces(pieces) {
@@ -16,7 +25,7 @@ function splitPieces(pieces) {
 }
 
 // Parse torrent file
-function parseTorrentFile(torrentPath) {
+export function parseTorrentFile(torrentPath) {
     // Read file and decode bencode
     const torrentFile = fs.readFileSync(torrentPath);
     const torrentData = bencode.decode(torrentFile);
@@ -30,6 +39,7 @@ function parseTorrentFile(torrentPath) {
 
     // Get data from decoded torrent file
     torrentObj.announce = new TextDecoder().decode(torrentData.announce);
+    torrentObj.info_hash = calculateInfoHash(torrentData);
     torrentObj.comment = new TextDecoder().decode(torrentData.comment);
     torrentObj.created_by = new TextDecoder().decode(torrentData['created by']);
     torrentObj.creation_date = new Date(torrentData['creation date'] * 1000).toUTCString();
@@ -38,14 +48,18 @@ function parseTorrentFile(torrentPath) {
     torrentObj.piece_length = torrentData.info['piece length'];
     torrentObj.pieces = splitPieces(torrentData.info.pieces);
 
-    console.log(torrentObj.announce);
-    console.log(torrentObj.comment);
-    console.log(torrentObj.created_by);
-    console.log(torrentObj.creation_date);
-    console.log(torrentObj.length);
-    console.log(torrentObj.name);
-    console.log(torrentObj.piece_length);
-    console.log(torrentObj.pieces);
-}
+    // Print extracted data for debugging
+    console.log('********** ********** **********');
+    console.log('Url of tracker: ', torrentObj.announce);
+    console.log('Info-hash of file: ', torrentObj.info_hash);
+    console.log('Comment: ', torrentObj.comment);
+    console.log('Created by: ', torrentObj.created_by);
+    console.log('Creation date: ', torrentObj.creation_date);
+    console.log('File total length: ', torrentObj.length);
+    console.log('File name: ', torrentObj.name);
+    console.log('Piece length: ', torrentObj.piece_length);
+    console.log('********** ********** **********');
+    //console.log(torrentObj.pieces);
 
-parseTorrentFile('../client/testdata/output/debian-12.5.0-amd64-netinst.iso.torrent');
+    return torrentObj;
+}

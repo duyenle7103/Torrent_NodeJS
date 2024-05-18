@@ -1,6 +1,7 @@
-class TorrentData {
+export class TorrentData {
     constructor() {
         this.announce = '';
+        this.info_hash = '';
         this.comment = '';
         this.created_by = '';
         this.creation_date = '';
@@ -10,5 +11,3 @@ class TorrentData {
         this.pieces = '';
     }
 }
-
-export default TorrentData;
