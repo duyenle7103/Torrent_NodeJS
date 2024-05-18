@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "bencode": "^4.0.0",
+    "bencode-js": "^0.0.8",
+    "express": "^4.19.2",
+    "parse-torrent": "^11.0.16"
+  },
+  "type": "module"
+}
