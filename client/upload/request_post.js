@@ -1,6 +1,6 @@
 import request from 'request';
 
-export function sendUploadSignal(torrentObj, IPAdress, port) {
+function sendUploadSignal(torrentObj, IPAdress, port) {
     // Prepare data to send to tracker
     const postData = {
         info_hash: new TextDecoder().decode(torrentObj.info_hash),
@@ -17,9 +17,11 @@ export function sendUploadSignal(torrentObj, IPAdress, port) {
     }
     request(clientServerOptions, function (error, response) {
         console.log("Sending information to tracker:");
-        console.log("\tInfo-hash: ", postData.info_hash);
+        console.log(`\tInfo-hash: ${postData.info_hash}`);
         console.log("\tIP address: ", postData.ip);
         console.log("Error: ", error);
         return;
     });
 }
+
+export { sendUploadSignal }

@@ -1,10 +1,10 @@
 import * as fs from 'fs'
 import crypto from 'crypto'
 
-export function splitFile(torrentObj, inputPath) {
-    const pieceLength = 262144;
+function splitFile(torrentObj, inputPath) {
     const file = fs.readFileSync(inputPath);
     const fileSize = file.length;
+    const pieceLength = 262144;
 
     // Split file into pieces with equal length
     const pieces = [];
@@ -39,3 +39,5 @@ export function splitFile(torrentObj, inputPath) {
 
     return hash_w_pieces;
 }
+
+export { splitFile }

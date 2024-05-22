@@ -3,7 +3,7 @@ import * as os from 'os';
 var nets = os.networkInterfaces();
 const results = Object.create(null);
 
-export function getIP() {
+function getIP() {
     for (const name of Object.keys(nets)) {
         for (const net of nets[name]) {
             // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
@@ -22,3 +22,5 @@ export function getIP() {
         return results['Ethernet 2'][0];
     }
 }
+
+export { getIP }

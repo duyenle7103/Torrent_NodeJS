@@ -1,6 +1,6 @@
 import request from 'request';
 
-export function createPeerID() {
+function createPeerID() {
     var result = [];
     const hexRef = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
     for (let n = 0; n < 12; n++) {
@@ -15,10 +15,10 @@ export function createPeerID() {
     return result;
 }
 
-export function buildTrackerURL(torrentObj, peerID, port) {
+function buildTrackerURL(torrentObj, port) {
 	const params = {
 		info_hash:  new TextDecoder().decode(torrentObj.info_hash),
-		peer_id:    peerID,
+		peer_id:    createPeerID(),
 		port:       port,
 		uploaded:   '0',
 		downloaded: '0',
@@ -32,7 +32,8 @@ export function buildTrackerURL(torrentObj, peerID, port) {
 }
 
 //Sending the request
-export function sendRequestToTracker(torrentObj, trackerURL) {
+function sendRequestToTracker(torrentObj, port) {
+    const trackerURL = buildTrackerURL(torrentObj, port);
     var url = torrentObj.announce + '/download' + '?' + trackerURL;
 
     request(url, function (error, response, body) {
@@ -41,3 +42,5 @@ export function sendRequestToTracker(torrentObj, trackerURL) {
         return;
     });
 }
+
+export { sendRequestToTracker }
