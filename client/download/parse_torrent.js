@@ -4,7 +4,7 @@ import crypto from 'crypto'
 import { TorrentData } from '../utility.js'
 
 // Calculate info-hash as 20-byte value
-function calculateInfoHash(torrentData) {
+export function calculateInfoHash(torrentData) {
     const info_bencode = bencode.encode(torrentData.info);
     var info_hash = crypto.createHash('sha1').update(info_bencode).digest();
     var result = new Uint8Array(info_hash);
@@ -58,8 +58,8 @@ export function parseTorrentFile(torrentPath) {
     console.log('File total length: ', torrentObj.length);
     console.log('File name: ', torrentObj.name);
     console.log('Piece length: ', torrentObj.piece_length);
-    console.log('********** ********** **********');
     //console.log(torrentObj.pieces);
+    console.log('********** ********** **********');
 
     return torrentObj;
 }

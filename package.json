@@ -3,8 +3,12 @@
     "bencode": "^4.0.0",
     "bencode-js": "^0.0.8",
     "express": "^4.19.2",
+    "git-filter-repo": "^0.0.30",
+    "i": "^0.3.7",
     "parse-torrent": "^11.0.16",
-    "prompt-sync": "^4.2.0"
+    "prompt-sync": "^4.2.0",
+    "request": "^2.88.2",
+    "split-file": "^2.3.0"
   },
   "type": "module"
 }

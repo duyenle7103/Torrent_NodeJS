@@ -1,6 +1,6 @@
 import promptSync from 'prompt-sync';
 import * as network from './network.js';
-import { app } from './server.js';
+import { app } from './response.js';
 
 // Initialize prompt for user input
 const prompt = promptSync();

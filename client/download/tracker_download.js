@@ -1,4 +1,4 @@
-import http from 'http'
+import request from 'request';
 
 export function createPeerID() {
     var result = [];
@@ -27,28 +27,17 @@ export function buildTrackerURL(torrentObj, peerID, port) {
 	}
 	const searchParams = new URLSearchParams(params);
     const params_string = searchParams.toString();
+    
+    return params_string;
 }
 
-const options = {
-    hostname: '192.168.244.170',
-    port: '1234',
-    path: '/announce',
-    method: 'GET'
-};
+//Sending the request
+export function sendRequestToTracker(torrentObj, trackerURL) {
+    var url = torrentObj.announce + '/download' + '?' + trackerURL;
 
-// Sending the request
-const req = http.request(options, (res) => {
-    let data = ''
- 
-    res.on('data', (chunk) => {
-        data += chunk;
+    request(url, function (error, response, body) {
+        console.log('Sending request to tracker: ', url);
+        console.log('Error: ', error);
+        return;
     });
- 
-    // Ending the response 
-    res.on('end', () => {
-        console.log('Body:', data)
-    });
- 
-}).on("error", (err) => {
-    console.log("Error: ", err)
-}).end()
+}
